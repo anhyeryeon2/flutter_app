@@ -1,9 +1,9 @@
+import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 
 import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
 
-//지출목록을 상태로 관리.
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
 
@@ -14,7 +14,6 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  // list변수로 지출을저장.. 카테고리 정보가짐.
   final List<Expense> _registeredExpenses = [
     Expense(
       title: 'Flutter Course',
@@ -30,16 +29,29 @@ class _ExpensesState extends State<Expenses> {
     ),
   ];
 
+  void _openAddExpenseOverlay() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
+    );
+  }
+
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter ExpensesTracker'),
+        title: const Text('Flutter ExpenseTracker'),
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: _openAddExpenseOverlay,
             icon: const Icon(Icons.add),
-          )
+          ),
         ],
       ),
       body: Column(
